@@ -139,11 +139,14 @@
             border-radius: 10px;
             font-size: 16px;
             transition: border-color 0.3s;
+            background: #f9fafb;
+            color: #374151;
+            min-height: 48px;
         }
 
-        .question-input:focus {
-            outline: none;
-            border-color: #667eea;
+        .question-input.fact-input {
+            min-height: 80px;
+            resize: vertical;
         }
 
         .navigation {
@@ -265,27 +268,24 @@
                 <button class="check-button" id="check-character" onclick="toggleCheck('character')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Character Name:</label>
-                    <input type="text" class="question-input" id="input-character" placeholder="Enter character name...">
+                    <div class="question-input" id="input-character"></div>
                 </div>
-                <button class="check-button" onclick="revealAnswer('character')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
                 <button class="check-button" id="check-game" onclick="toggleCheck('game')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Game Title:</label>
-                    <input type="text" class="question-input" id="input-game" placeholder="Enter game title...">
+                    <div class="question-input" id="input-game"></div>
                 </div>
-                <button class="check-button" onclick="revealAnswer('game')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
                 <button class="check-button" id="check-fact" onclick="toggleCheck('fact')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Fun Fact:</label>
-                    <input type="text" class="question-input" id="input-fact" placeholder="Enter the fun fact...">
+                    <div class="question-input fact-input" id="input-fact"></div>
                 </div>
-                <button class="check-button" onclick="revealAnswer('fact')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="navigation">
@@ -335,6 +335,11 @@
             // Try different image formats
             loadImage(currentSlide + 1);
             
+            // Clear all answer fields
+            document.getElementById('input-character').textContent = '';
+            document.getElementById('input-game').textContent = '';
+            document.getElementById('input-fact').textContent = '';
+            
             document.getElementById('prev-button').disabled = currentSlide === 0;
             document.getElementById('next-button').textContent = currentSlide === characters.length - 1 ? 'Finish →' : 'Next →';
             
@@ -365,7 +370,19 @@
 
         function toggleCheck(field) {
             const key = `${currentSlide}-${field}`;
-            scores[key] = !scores[key];
+            const isCurrentlyChecked = scores[key];
+            
+            // Toggle the score
+            scores[key] = !isCurrentlyChecked;
+            
+            // If checking (revealing answer), show the answer
+            if (!isCurrentlyChecked) {
+                revealAnswer(field);
+            } else {
+                // If unchecking, clear the answer
+                document.getElementById(`input-${field}`).textContent = '';
+            }
+            
             updateCheckButtons();
             updateScore();
         }
@@ -375,11 +392,11 @@
             const input = document.getElementById(`input-${field}`);
             
             if (field === 'character') {
-                input.value = char.name;
+                input.textContent = char.name;
             } else if (field === 'game') {
-                input.value = char.game;
+                input.textContent = char.game;
             } else if (field === 'fact') {
-                input.value = char.fact;
+                input.textContent = char.fact;
             }
         }
 
