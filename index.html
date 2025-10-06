@@ -328,14 +328,36 @@
             document.getElementById('character-number').textContent = `Character ${currentSlide + 1} of ${characters.length}`;
             document.getElementById('difficulty-badge').textContent = char.difficulty;
             document.getElementById('difficulty-badge').className = `difficulty-badge difficulty-${char.difficulty.toLowerCase()}`;
-            document.getElementById('character-image').src = `images/character${currentSlide + 1}.jpg`;
-            document.getElementById('character-image').alt = `Character ${currentSlide + 1}`;
+
+            // Try different image formats
+            loadImage(currentSlide + 1);
             
             document.getElementById('prev-button').disabled = currentSlide === 0;
             document.getElementById('next-button').textContent = currentSlide === characters.length - 1 ? 'Finish →' : 'Next →';
             
             updateScore();
             updateCheckButtons();
+        }
+
+        function loadImage(number) {
+            const img = document.getElementById('character-image');
+            const formats = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+            let formatIndex = 0;
+
+            function tryNextFormat() {
+                if (formatIndex < formats.length) {
+                    const format = formats[formatIndex];
+                    img.src = `images/character${number}.${format}`;
+                    formatIndex++;
+                } else {
+                    // If all formats fail, show placeholder
+                    img.alt = `Character ${number} - Image not found`;
+                }
+            }
+
+            img.onerror = tryNextFormat;
+            img.alt = `Character ${number}`;
+            tryNextFormat();
         }
 
         function toggleCheck(slide, field) {
