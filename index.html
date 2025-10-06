@@ -270,6 +270,7 @@
                     <label class="question-label">Character Name:</label>
                     <div class="question-input" id="input-character"></div>
                 </div>
+                <button class="check-button" onclick="revealAnswer('character')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
@@ -278,6 +279,7 @@
                     <label class="question-label">Game Title:</label>
                     <div class="question-input" id="input-game"></div>
                 </div>
+                <button class="check-button" onclick="revealAnswer('game')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
@@ -286,6 +288,7 @@
                     <label class="question-label">Fun Fact:</label>
                     <div class="question-input fact-input" id="input-fact"></div>
                 </div>
+                <button class="check-button" onclick="revealAnswer('fact')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="navigation">
@@ -375,12 +378,9 @@
             // Toggle the score
             scores[key] = !isCurrentlyChecked;
             
-            // If checking (revealing answer), show the answer
+            // Always show the answer when checking
             if (!isCurrentlyChecked) {
                 revealAnswer(field);
-            } else {
-                // If unchecking, clear the answer
-                document.getElementById(`input-${field}`).textContent = '';
             }
             
             updateCheckButtons();
