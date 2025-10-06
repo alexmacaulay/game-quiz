@@ -262,27 +262,30 @@
             </div>
 
             <div class="question-group">
-                <button class="check-button" id="check-character" onclick="toggleCheck(0, 'character')">✓</button>
+                <button class="check-button" id="check-character" onclick="toggleCheck('character')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Character Name:</label>
-                    <input type="text" class="question-input" placeholder="Enter character name...">
+                    <input type="text" class="question-input" id="input-character" placeholder="Enter character name...">
                 </div>
+                <button class="check-button" onclick="revealAnswer('character')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
-                <button class="check-button" id="check-game" onclick="toggleCheck(0, 'game')">✓</button>
+                <button class="check-button" id="check-game" onclick="toggleCheck('game')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Game Title:</label>
-                    <input type="text" class="question-input" placeholder="Enter game title...">
+                    <input type="text" class="question-input" id="input-game" placeholder="Enter game title...">
                 </div>
+                <button class="check-button" onclick="revealAnswer('game')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="question-group">
-                <button class="check-button" id="check-fact" onclick="toggleCheck(0, 'fact')">✓</button>
+                <button class="check-button" id="check-fact" onclick="toggleCheck('fact')">✓</button>
                 <div class="question-field">
                     <label class="question-label">Fun Fact:</label>
-                    <input type="text" class="question-input" placeholder="Enter the fun fact...">
+                    <input type="text" class="question-input" id="input-fact" placeholder="Enter the fun fact...">
                 </div>
+                <button class="check-button" onclick="revealAnswer('fact')" style="background: #ef4444; color: white;">✕</button>
             </div>
 
             <div class="navigation">
@@ -328,7 +331,7 @@
             document.getElementById('character-number').textContent = `Character ${currentSlide + 1} of ${characters.length}`;
             document.getElementById('difficulty-badge').textContent = char.difficulty;
             document.getElementById('difficulty-badge').className = `difficulty-badge difficulty-${char.difficulty.toLowerCase()}`;
-
+            
             // Try different image formats
             loadImage(currentSlide + 1);
             
@@ -360,11 +363,24 @@
             tryNextFormat();
         }
 
-        function toggleCheck(slide, field) {
+        function toggleCheck(field) {
             const key = `${currentSlide}-${field}`;
             scores[key] = !scores[key];
             updateCheckButtons();
             updateScore();
+        }
+
+        function revealAnswer(field) {
+            const char = characters[currentSlide];
+            const input = document.getElementById(`input-${field}`);
+            
+            if (field === 'character') {
+                input.value = char.name;
+            } else if (field === 'game') {
+                input.value = char.game;
+            } else if (field === 'fact') {
+                input.value = char.fact;
+            }
         }
 
         function updateCheckButtons() {
